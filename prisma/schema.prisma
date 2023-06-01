@@ -17,13 +17,14 @@ model User {
   login     String
   avatarUrl String
 
-  memories Memory[]
+  recipes Recipe[]
 }
 
-model Memory {
+model Recipe {
   id     String @id @default(uuid())
   userId String
 
+  title     String
   coverUrl  String
   content   String
   isPublic  Boolean  @default(false)
