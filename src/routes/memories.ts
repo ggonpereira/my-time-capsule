@@ -2,41 +2,41 @@ import { FastifyInstance } from 'fastify'
 import { z } from 'zod'
 import { prisma } from '../lib/prisma'
 
-export const recipesRoutes = async (app: FastifyInstance) => {
-  app.get('/recipes', async () => {
-    const recipes = await prisma.recipe.findMany({
+export const memoriesRoutes = async (app: FastifyInstance) => {
+  app.get('/memories', async () => {
+    const memories = await prisma.memory.findMany({
       orderBy: {
         createdAt: 'asc',
       },
     })
 
-    const parsedRecipes = recipes.map((recipe) => ({
-      id: recipe.id,
-      title: recipe.title,
-      coverUrl: recipe.coverUrl,
-      excerpt: recipe.content.substring(0, 115).concat('...'),
+    const parsedMemories = memories.map((memory) => ({
+      id: memory.id,
+      title: memory.title,
+      coverUrl: memory.coverUrl,
+      excerpt: memory.content.substring(0, 115).concat('...'),
     }))
 
-    return parsedRecipes
+    return parsedMemories
   })
 
-  app.get('/recipes/:id', async (request) => {
+  app.get('/memories/:id', async (request) => {
     const paramsSchema = z.object({
       id: z.string().uuid(),
     })
 
     const { id } = paramsSchema.parse(request.params)
 
-    const recipe = await prisma.recipe.findUniqueOrThrow({
+    const memory = await prisma.memory.findUniqueOrThrow({
       where: {
         id,
       },
     })
 
-    return recipe
+    return memory
   })
 
-  app.post('/recipes', async (request) => {
+  app.post('/memories', async (request) => {
     const bodySchema = z.object({
       title: z.string(),
       content: z.string(),
@@ -48,7 +48,7 @@ export const recipesRoutes = async (app: FastifyInstance) => {
       request.body,
     )
 
-    const recipe = await prisma.recipe.create({
+    const memory = await prisma.memory.create({
       data: {
         title,
         content,
@@ -58,10 +58,10 @@ export const recipesRoutes = async (app: FastifyInstance) => {
       },
     })
 
-    return recipe
+    return memory
   })
 
-  app.put('/recipes/:id', async (request) => {
+  app.put('/memories/:id', async (request) => {
     const bodySchema = z.object({
       title: z.string(),
       content: z.string(),
@@ -79,7 +79,7 @@ export const recipesRoutes = async (app: FastifyInstance) => {
 
     const { id } = paramsSchema.parse(request.params)
 
-    const recipe = await prisma.recipe.update({
+    const memory = await prisma.memory.update({
       where: {
         id,
       },
@@ -91,17 +91,17 @@ export const recipesRoutes = async (app: FastifyInstance) => {
       },
     })
 
-    return recipe
+    return memory
   })
 
-  app.delete('/recipes/:id', async (request) => {
+  app.delete('/memories/:id', async (request) => {
     const paramsSchema = z.object({
       id: z.string().uuid(),
     })
 
     const { id } = paramsSchema.parse(request.params)
 
-    await prisma.recipe.delete({
+    await prisma.memory.delete({
       where: {
         id,
       },

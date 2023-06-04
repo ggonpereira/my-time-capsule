@@ -17,10 +17,10 @@ model User {
   login     String
   avatarUrl String
 
-  recipes Recipe[]
+  memories Memory[]
 }
 
-model Recipe {
+model Memory {
   id     String @id @default(uuid())
   userId String
 

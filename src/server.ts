@@ -1,6 +1,6 @@
 import fastify from 'fastify'
 import cors from '@fastify/cors'
-import { recipesRoutes } from './routes/recipes'
+import { memoriesRoutes } from './routes/memories'
 
 const PORT = 3333
 
@@ -9,7 +9,7 @@ const app = fastify()
 app.register(cors, {
   origin: true,
 })
-app.register(recipesRoutes)
+app.register(memoriesRoutes)
 
 app
   .listen({
